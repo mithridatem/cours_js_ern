@@ -23,6 +23,7 @@ export default class Pme
         console.log(this.nom + " Cout Equipe : " + (coutsSalaires));
         console.log(this.nom + " Ventes : " + this.ventes);
         const bilan = this.ventes - (coutsSalaires + this.fraisFixe + this.achats);
+this.bilan = bilan;
         console.log(this.nom + " Bilan : " + bilan);
     }
 }

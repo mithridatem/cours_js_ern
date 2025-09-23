@@ -64,6 +64,6 @@ export default class CompteBancaire {
      * @return string 
      */
     afficherCompte() {
-        return `Titulaire : ${this.nom}, solde : ${this.solde}`;
+        return `Titulaire : ${this.nom}, solde : ${this.solde} €`;
     }
 }

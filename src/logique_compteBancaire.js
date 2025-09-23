@@ -17,10 +17,13 @@ const btVirement = document.querySelector('#id_virement');
 
 const message = document.querySelector('#id_message');
 
+const btSolde = document.querySelector('#id_solde');
+
 //Tableau de comptes bancaires
 const comptes = [];
 
 //1 Créer un compte (CompteBancaire)
+
 //écouteur événement sur le bouton créer un compte
 btCreate.addEventListener('click', () => {
     try {
@@ -72,7 +75,7 @@ btCrediter.addEventListener('click', () => {
         //Opération de credit du montant
         compte.credit(parseFloat(montantOperation.value));
         //Message de confirmation
-        message.innerText = `Le compte : ${compteOperation.value} à été retirer de : ${montantOperation.value} €, 
+        message.innerText = `Le compte : ${compteOperation.value} à été crédité de : ${montantOperation.value} €, 
         ${compte.afficherCompte()}`;
         tools.messageColorValid(message);
     } catch (error) {
@@ -150,7 +153,7 @@ btVirement.addEventListener('click', () => {
         //opération de virement
         source.virement(parseFloat(montantVirement.value), cible);
         //Message de confirmation
-        message.innerText = `Le compte : ${source.nom} a viré la somme de : ${montantVirement.value} à ${cible.nom}. 
+        message.innerText = `Le compte : ${source.nom} a viré la somme de : ${montantVirement.value} € à ${cible.nom}. 
         ${source.afficherCompte()},  
         ${cible.afficherCompte()}
         `;
@@ -161,6 +164,26 @@ btVirement.addEventListener('click', () => {
     }
     //vider les champs du formulaire
     tools.clearInput();
+    //vider la zone de message
+    tools.resetMessage(message);
+});
+
+//4 solde des comptes
+btSolde.addEventListener('click', () => {
+    try {
+        //test si le tableau est vide
+        if (comptes.length === 0) {
+            throw new Error(`Il n'y à pas de compte enregistré`);
+        }
+        //Boucle pour afficher tous les comptes
+        comptes.forEach(compte =>{
+            message.innerText += `${compte.afficherCompte()} \n`;
+        });
+        tools.messageColorValid(message);
+    } catch (error) {
+        message.innerText = error.message;
+        tools.messageColorError(message);
+    }
     //vider la zone de message
     tools.resetMessage(message);
 });

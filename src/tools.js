@@ -20,8 +20,8 @@ export function isCompteBancaireExist(tabComptes, nom) {
  * @param {string} value 
  * @returns {CompteBancaire | undefined}
  */
-export function trouverCompteParNom(tab, value) {
-    return tab.find(objet => objet.nom === value);
+export function trouverCompteParNom(tab, nom) {
+    return tab.find(compte => compte.nom === nom);
 }
 
 /**

@@ -20,7 +20,7 @@ const message = document.querySelector('#id_message');
 //Tableau de comptes bancaires
 const comptes = [];
 
-//1 Créer un compte (
+//1 Créer un compte (CompteBancaire)
 //écouteur événement sur le bouton créer un compte
 btCreate.addEventListener('click', () => {
     try {

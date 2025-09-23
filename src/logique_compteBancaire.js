@@ -1,5 +1,5 @@
 import CompteBancaire from "./compteBancaire.js";
-import { isCompteBancaireExist, trouverCompteParNom, resetMessage, clearInput, messageColorValid, messageColorError } from './tools.js';
+import * as tools from './tools.js';
 
 //Récupération des élèments du DOM
 const nomCompte = document.querySelector('#id_nom');
@@ -29,22 +29,22 @@ btCreate.addEventListener('click', () => {
             throw new Error(`Le champ nom est vide veuillez le remplir`);
         }
         //test si le compte existe déja
-        if (isCompteBancaireExist(comptes, nomCompte.value)) {
+        if (tools.isCompteBancaireExist(comptes, nomCompte.value)) {
             throw new Error(`Le compte ${nomCompte.value} existe déja`);
         }
         //Ajout du compte bancaire au tableau (comptes)
         comptes.push(new CompteBancaire(nomCompte.value));
         //Afficher le message
         message.innerText = `Le compte ${nomCompte.value} a été ajouté`;
-        messageColorValid(message);
+        tools.messageColorValid(message);
     } catch (error) {
         message.innerText = error.message;
-        messageColorError(message);
+        tools.messageColorError(message);
     }
     //vider les champs du formulaire
-    clearInput();
+    tools.clearInput();
     //vider la zone de message
-    resetMessage(message);
+    tools.resetMessage(message);
 });
 
 //2 Opérations sur compte bancaire (credit et retrait) du tableau (comptes)
@@ -63,26 +63,26 @@ btCrediter.addEventListener('click', () => {
             throw new Error(`Le montant à créditer : ${montantOperation.value} n'est pas un nombre`);
         }
         //Test si le compte n'existe pas
-        if (!isCompteBancaireExist(comptes, compteOperation.value)) {
+        if (!tools.isCompteBancaireExist(comptes, compteOperation.value)) {
             throw new Error(`Le compte ${compteOperation.value} n'existe pas`);
         }
         //Opération credit du montant du compte
         //Récupérer le compte bancaire
-        const compte = trouverCompteParNom(comptes, compteOperation.value);
+        const compte = tools.trouverCompteParNom(comptes, compteOperation.value);
         //Opération de credit du montant
         compte.credit(parseFloat(montantOperation.value));
         //Message de confirmation
         message.innerText = `Le compte : ${compteOperation.value} à été retirer de : ${montantOperation.value} €, 
         ${compte.afficherCompte()}`;
-        messageColorValid(message);
+        tools.messageColorValid(message);
     } catch (error) {
         message.innerText = error.message;
-        messageColorError(message);
+        tools.messageColorError(message);
     }
     //vider les champs du formulaire
-    clearInput();
+    tools.clearInput();
     //vider la zone de message
-    resetMessage(message);
+    tools.resetMessage(message);
 });
 
 //2.2 retirer du compte
@@ -99,26 +99,26 @@ btRetirer.addEventListener('click', () => {
             throw new Error(`Le montant à retirer : ${montantOperation.value} n'est pas un nombre`);
         }
         //Test si le compte n'existe pas
-        if (!isCompteBancaireExist(comptes, compteOperation.value)) {
+        if (!tools.isCompteBancaireExist(comptes, compteOperation.value)) {
             throw new Error(`Le compte ${compteOperation.value} n'existe pas`);
         }
         //Opération retrait du montant du compte
         //Récupérer le compte bancaire
-        const compte = trouverCompteParNom(comptes, compteOperation.value);
+        const compte = tools.trouverCompteParNom(comptes, compteOperation.value);
         //Opération de retrait du montant
         compte.retrait(parseFloat(montantOperation.value));
         //Message de confirmation
         message.innerText = `Le compte : ${compteOperation.value} à été retirer de : ${montantOperation.value} €, 
         ${compte.afficherCompte()}`;
-        messageColorValid(message);
+        tools.messageColorValid(message);
     } catch (error) {
         message.innerText = error.message;
-        messageColorError(message);
+        tools.messageColorError(message);
     }
     //vider les champs du formulaire
-    clearInput();
+    tools.clearInput();
     //vider la zone de message
-    resetMessage(message);
+    tools.resetMessage(message);
 });
 
 //3 virement entre compte bancaire
@@ -135,18 +135,18 @@ btVirement.addEventListener('click', () => {
             throw new Error(`Le montant à retirer : ${montantVirement.value} n'est pas un nombre`);
         }
         //test si le compte source n'existe pas
-        if (!isCompteBancaireExist(comptes, compteSource.value)) {
+        if (!tools.isCompteBancaireExist(comptes, compteSource.value)) {
             throw new Error(`Le compte ${compteSource.value} n'existe pas`);
         }
         //test si me compte cible n'existe pas
-        if (!isCompteBancaireExist(comptes, compteCible.value)) {
+        if (!tools.isCompteBancaireExist(comptes, compteCible.value)) {
             throw new Error(`Le compte ${compteCible.value} n'existe pas`);
         }
         //Opération de virement entre compte bancaire
         //Compte source
-        const source = trouverCompteParNom(comptes, compteSource.value);
+        const source = tools.trouverCompteParNom(comptes, compteSource.value);
         //Compte cible
-        const cible = trouverCompteParNom(comptes, compteCible.value);
+        const cible = tools.trouverCompteParNom(comptes, compteCible.value);
         //opération de virement
         source.virement(parseFloat(montantVirement.value), cible);
         //Message de confirmation
@@ -154,13 +154,13 @@ btVirement.addEventListener('click', () => {
         ${source.afficherCompte()},  
         ${cible.afficherCompte()}
         `;
-        messageColorValid(message);
+        tools.messageColorValid(message);
     } catch (error) {
         message.innerText = error.message;
-        messageColorError(message);
+        tools.messageColorError(message);
     }
     //vider les champs du formulaire
-    clearInput();
+    tools.clearInput();
     //vider la zone de message
-    resetMessage(message);
+    tools.resetMessage(message);
 });

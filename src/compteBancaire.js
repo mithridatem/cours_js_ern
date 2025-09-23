@@ -1,7 +1,5 @@
 export default class CompteBancaire {
 
-    //Constructeur
-
     /**
      * Constructeur de la classe CompteBancaire
      * @param {string} nom 

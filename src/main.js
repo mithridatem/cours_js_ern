@@ -1,2 +1,2 @@
 import './style.css'
-import './test_compteBancaire.js';
+import './logique_compteBancaire.js';

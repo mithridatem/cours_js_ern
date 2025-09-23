@@ -1,4 +1,5 @@
 import CompteBancaire from "./compteBancaire.js";
+import { isCompteBancaireExist, trouverCompteParNom, resetMessage } from './tools.js';
 
 //Récupération des élèments du DOM
 const nomCompte = document.querySelector('#id_nom');
@@ -22,24 +23,33 @@ const comptes = [];
 //1 Créer un compte (
 //écouteur événement sur le bouton créer un compte
 btCreate.addEventListener('click', () => {
-    //test si le champs id_nom est remplis
-    if (nomCompte.value === "") {
-        message.textContent = `Le champ nom est vide veuillez le remplir`;
-    } else {
-
-        if (compteBancaireExist(comptes, nomCompte.value)) {
-            message.textContent = `Le compte existe déja`;
-        } else {
-            message.textContent = `Le compte ${nomCompte.value} a été ajouté`;
-            comptes.push(new CompteBancaire(nomCompte.value));
-            console.log(comptes);
+    try {
+        //test si le champs id_nom est remplis
+        if (nomCompte.value === "") {
+            throw new Error(`Le champ nom est vide veuillez le remplir`);
         }
+        //test si le compte existe déja
+        if (isCompteBancaireExist(comptes, nomCompte.value)) {
+            throw new Error(`Le compte existe déja`);
+        }
+        //Ajout du compte bancaire au tableau (comptes)
+        comptes.push(new CompteBancaire(nomCompte.value));
+        //Afficher le message
+        message.innerText = `Le compte ${nomCompte.value} a été ajouté`;
+        message.classList.remove("error");
+        message.classList.add("valid");
+    } catch (error) {
+        message.innerText = error.message;
+        message.classList.remove("valid");
+        message.classList.add("error");
     }
     //vider les champs du formulaire
     nomCompte.value = "";
+    //vider la zone de message
+    resetMessage();
 });
 
-//2 Opérations d'un compte bancaire
+//2 Opérations sur compte bancaire (credit et retrait) du tableau (comptes)
 
 //2.1 créditer le compte
 
@@ -55,22 +65,29 @@ btCrediter.addEventListener('click', () => {
             throw new Error(`Le montant à créditer : ${montantOperation.value} n'est pas un nombre`);
         }
         //Test si le compte n'existe pas
-        if (!compteBancaireExist(comptes, compteOperation.value)) {
+        if (!isCompteBancaireExist(comptes, compteOperation.value)) {
             throw new Error(`Le compte ${compteOperation.value} n'existe pas`);
         }
-        //créditer le compte
-        for (const compte of comptes) {
-            if (compte.nom == compteOperation.value) {
-                compte.credit(parseFloat(montantOperation.value));
-                message.textContent = `Le compte : ${compteOperation.value} à été crédité de : ${montantOperation.value} €`;
-            }
-        }
+        //Opération credit du montant du compte
+        //Récupérer le compte bancaire
+        const compte = trouverCompteParNom(comptes, compteOperation.value);
+        //Opération de credit du montant
+        compte.credit(parseFloat(montantOperation.value));
+        //Message de confirmation
+        message.innerText = `Le compte : ${compteOperation.value} à été retirer de : ${montantOperation.value} €, 
+        ${compte.afficherCompte()}`;
+        message.classList.remove("error");
+        message.classList.add("valid");
     } catch (error) {
-        message.textContent = error.message;
+        message.innerText = error.message;
+        message.classList.remove("valid");
+        message.classList.add("error");
     }
     //Vider les inputs de formulaire
     montantOperation.value = "";
     compteOperation.value = "";
+    //vider la zone de message
+    resetMessage();
 });
 
 //2.2 retirer du compte
@@ -87,22 +104,29 @@ btRetirer.addEventListener('click', () => {
             throw new Error(`Le montant à retirer : ${montantOperation.value} n'est pas un nombre`);
         }
         //Test si le compte n'existe pas
-        if (!compteBancaireExist(comptes, compteOperation.value)) {
+        if (!isCompteBancaireExist(comptes, compteOperation.value)) {
             throw new Error(`Le compte ${compteOperation.value} n'existe pas`);
         }
-        //créditer le compte
-        for (const compte of comptes) {
-            if (compte.nom == compteOperation.value) {
-                compte.retrait(parseFloat(montantOperation.value));
-                message.textContent = `Le compte : ${compteOperation.value} à été retirer de : ${montantOperation.value} €`;
-            }
-        }
+        //Opération retrait du montant du compte
+        //Récupérer le compte bancaire
+        const compte = trouverCompteParNom(comptes, compteOperation.value);
+        //Opération de retrait du montant
+        compte.retrait(parseFloat(montantOperation.value));
+        //Message de confirmation
+        message.innerText = `Le compte : ${compteOperation.value} à été retirer de : ${montantOperation.value} €, 
+        ${compte.afficherCompte()}`;
+        message.classList.remove("error");
+        message.classList.add("valid");
     } catch (error) {
-        message.textContent = error.message;
+        message.innerText = error.message;
+        message.classList.remove("valid");
+        message.classList.add("error");
     }
     //Vider les inputs de formulaire
     montantOperation.value = "";
     compteOperation.value = "";
+    //vider la zone de message
+    resetMessage();
 });
 
 //3 virement entre compte bancaire
@@ -119,53 +143,36 @@ btVirement.addEventListener('click', () => {
             throw new Error(`Le montant à retirer : ${montantVirement.value} n'est pas un nombre`);
         }
         //test si le compte source n'existe pas
-        if (!compteBancaireExist(comptes, compteSource.value)) {
+        if (!isCompteBancaireExist(comptes, compteSource.value)) {
             throw new Error(`Le compte ${compteSource.value} n'existe pas`);
         }
         //test si me compte cible n'existe pas
-        if (!compteBancaireExist(comptes, compteCible.value)) {
+        if (!isCompteBancaireExist(comptes, compteCible.value)) {
             throw new Error(`Le compte ${compteCible.value} n'existe pas`);
         }
-        //virement
-        const source = indexCompte(comptes, compteSource.value);
-        const cible = indexCompte(comptes, compteCible.value);
-        comptes[source].virement(parseFloat(montantVirement.value), comptes[cible]);
-        message.textContent = `Le compte : ${comptes[source].nom} a viré la somme de : ${montantVirement.value} à ${comptes[cible].nom}`;
+        //Opération de virement entre compte bancaire
+        //Compte source
+        const source = trouverCompteParNom(comptes, compteSource.value);
+        //Compte cible
+        const cible = trouverCompteParNom(comptes, compteCible.value);
+        //opération de virement
+        source.virement(parseFloat(montantVirement.value),cible);
+        //Message de confirmation
+        message.innerText = `Le compte : ${source.nom} a viré la somme de : ${montantVirement.value} à ${cible.nom}. 
+        ${source.afficherCompte()},  
+        ${cible.afficherCompte()}
+        `;
+        message.classList.remove("error");
+        message.classList.add("valid");
     } catch (error) {
-        message.textContent = error.message;
+        message.innerText = error.message;
+        message.classList.remove("valid");
+        message.classList.add("error");
     }
     //Vider les inputs de formulaire
     compteSource.value = "";
     compteCible.value = "";
     montantVirement.value = "";
+    //vider la zone de message
+    resetMessage();
 });
-
-//Fonctions utilitaires
-/**
- * Méthode qui vérifie si un compte bancaire existe
- * @param {Array<CompteBancaire>} tabComptes 
- * @param {String} nom 
- * @return boolean true si existe false existe pas
- */
-function compteBancaireExist(tabComptes, nom) {
-    for (const compte of tabComptes) {
-        if (compte.nom == nom) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/**
- * Méthode qui récupére l'index d'un compte
- * @param {Array<CompteBancaire>} tabComptes 
- * @param {String} nom 
- * @return int index du compte
- */
-function indexCompte(tabComptes, nom) {
-    for (let i = 0; i < tabComptes.length; i++) {
-        if (tabComptes[i].nom === nom) {
-            return i;
-        }
-    }
-}

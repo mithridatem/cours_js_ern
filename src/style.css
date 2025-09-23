@@ -12,12 +12,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-main {
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 a {
   font-weight: 500;
   color: #646cff;
@@ -98,4 +92,19 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+/* zone message */
+main {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+#message {
+  font-size:3em;
+}
+.error {
+  color: red;
+}
+.valid {
+  color: green;
 }

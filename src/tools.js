@@ -37,17 +37,17 @@ export function resetMessage(target) {
  * Méthode qui vide le contenu de tous les inputs
  */
 export function clearInput() {
-    document.querySelectorAll('input').forEach(input =>{
+    document.querySelectorAll('input').forEach(input => {
         input.value = "";
     });
 }
 
-export function messageColorValid(target){
+export function messageColorValid(target) {
     target.classList.add("valid");
     target.classList.remove("error");
 }
 
-export function messageColorError(target){
+export function messageColorError(target) {
     target.classList.add("error");
     target.classList.remove("valid");
 }

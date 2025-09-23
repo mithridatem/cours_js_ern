@@ -1,5 +1,5 @@
 import CompteBancaire from "./compteBancaire.js";
-import { isCompteBancaireExist, trouverCompteParNom, resetMessage, clearInput } from './tools.js';
+import { isCompteBancaireExist, trouverCompteParNom, resetMessage, clearInput, messageColorValid, messageColorError } from './tools.js';
 
 //Récupération des élèments du DOM
 const nomCompte = document.querySelector('#id_nom');
@@ -36,12 +36,10 @@ btCreate.addEventListener('click', () => {
         comptes.push(new CompteBancaire(nomCompte.value));
         //Afficher le message
         message.innerText = `Le compte ${nomCompte.value} a été ajouté`;
-        message.classList.remove("error");
-        message.classList.add("valid");
+        messageColorValid(message);
     } catch (error) {
         message.innerText = error.message;
-        message.classList.remove("valid");
-        message.classList.add("error");
+        messageColorError(message);
     }
     //vider les champs du formulaire
     clearInput();
@@ -76,12 +74,10 @@ btCrediter.addEventListener('click', () => {
         //Message de confirmation
         message.innerText = `Le compte : ${compteOperation.value} à été retirer de : ${montantOperation.value} €, 
         ${compte.afficherCompte()}`;
-        message.classList.remove("error");
-        message.classList.add("valid");
+        messageColorValid(message);
     } catch (error) {
         message.innerText = error.message;
-        message.classList.remove("valid");
-        message.classList.add("error");
+        messageColorError(message);
     }
     //vider les champs du formulaire
     clearInput();
@@ -114,12 +110,10 @@ btRetirer.addEventListener('click', () => {
         //Message de confirmation
         message.innerText = `Le compte : ${compteOperation.value} à été retirer de : ${montantOperation.value} €, 
         ${compte.afficherCompte()}`;
-        message.classList.remove("error");
-        message.classList.add("valid");
+        messageColorValid(message);
     } catch (error) {
         message.innerText = error.message;
-        message.classList.remove("valid");
-        message.classList.add("error");
+        messageColorError(message);
     }
     //vider les champs du formulaire
     clearInput();
@@ -154,18 +148,16 @@ btVirement.addEventListener('click', () => {
         //Compte cible
         const cible = trouverCompteParNom(comptes, compteCible.value);
         //opération de virement
-        source.virement(parseFloat(montantVirement.value),cible);
+        source.virement(parseFloat(montantVirement.value), cible);
         //Message de confirmation
         message.innerText = `Le compte : ${source.nom} a viré la somme de : ${montantVirement.value} à ${cible.nom}. 
         ${source.afficherCompte()},  
         ${cible.afficherCompte()}
         `;
-        message.classList.remove("error");
-        message.classList.add("valid");
+        messageColorValid(message);
     } catch (error) {
         message.innerText = error.message;
-        message.classList.remove("valid");
-        message.classList.add("error");
+        messageColorError(message);
     }
     //vider les champs du formulaire
     clearInput();

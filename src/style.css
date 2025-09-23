@@ -113,10 +113,10 @@ main {
   font-size: 3em;
 }
 
-.error {
-  color: red;
-}
-
 .valid {
   color: green;
+}
+
+.error {
+  color: red;
 }

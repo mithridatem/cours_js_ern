@@ -41,3 +41,13 @@ export function clearInput() {
         input.value = "";
     });
 }
+
+export function messageColorValid(target){
+    target.classList.add("valid");
+    target.classList.remove("error");
+}
+
+export function messageColorError(target){
+    target.classList.add("error");
+    target.classList.remove("valid");
+}

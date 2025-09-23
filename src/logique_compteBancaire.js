@@ -1,5 +1,5 @@
 import CompteBancaire from "./compteBancaire.js";
-import { isCompteBancaireExist, trouverCompteParNom, resetMessage } from './tools.js';
+import { isCompteBancaireExist, trouverCompteParNom, resetMessage, clearInput } from './tools.js';
 
 //Récupération des élèments du DOM
 const nomCompte = document.querySelector('#id_nom');
@@ -30,7 +30,7 @@ btCreate.addEventListener('click', () => {
         }
         //test si le compte existe déja
         if (isCompteBancaireExist(comptes, nomCompte.value)) {
-            throw new Error(`Le compte existe déja`);
+            throw new Error(`Le compte ${nomCompte.value} existe déja`);
         }
         //Ajout du compte bancaire au tableau (comptes)
         comptes.push(new CompteBancaire(nomCompte.value));
@@ -44,9 +44,9 @@ btCreate.addEventListener('click', () => {
         message.classList.add("error");
     }
     //vider les champs du formulaire
-    nomCompte.value = "";
+    clearInput();
     //vider la zone de message
-    resetMessage();
+    resetMessage(message);
 });
 
 //2 Opérations sur compte bancaire (credit et retrait) du tableau (comptes)
@@ -83,11 +83,10 @@ btCrediter.addEventListener('click', () => {
         message.classList.remove("valid");
         message.classList.add("error");
     }
-    //Vider les inputs de formulaire
-    montantOperation.value = "";
-    compteOperation.value = "";
+    //vider les champs du formulaire
+    clearInput();
     //vider la zone de message
-    resetMessage();
+    resetMessage(message);
 });
 
 //2.2 retirer du compte
@@ -122,11 +121,10 @@ btRetirer.addEventListener('click', () => {
         message.classList.remove("valid");
         message.classList.add("error");
     }
-    //Vider les inputs de formulaire
-    montantOperation.value = "";
-    compteOperation.value = "";
+    //vider les champs du formulaire
+    clearInput();
     //vider la zone de message
-    resetMessage();
+    resetMessage(message);
 });
 
 //3 virement entre compte bancaire
@@ -169,10 +167,8 @@ btVirement.addEventListener('click', () => {
         message.classList.remove("valid");
         message.classList.add("error");
     }
-    //Vider les inputs de formulaire
-    compteSource.value = "";
-    compteCible.value = "";
-    montantVirement.value = "";
+    //vider les champs du formulaire
+    clearInput();
     //vider la zone de message
-    resetMessage();
+    resetMessage(message);
 });

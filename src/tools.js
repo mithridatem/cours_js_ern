@@ -28,8 +28,16 @@ export function trouverCompteParNom(tab, value) {
  * Méthode pour reset la zone de message
  * @returns void
  */
-export function resetMessage() {
+export function resetMessage(target) {
     setTimeout(() => {
-        message.textContent = "";
+        target.textContent = "";
     }, 3000)
+}
+/**
+ * Méthode qui vide le contenu de tous les inputs
+ */
+export function clearInput() {
+    document.querySelectorAll('input').forEach(input =>{
+        input.value = "";
+    });
 }

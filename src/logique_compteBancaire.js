@@ -176,7 +176,7 @@ btSolde.addEventListener('click', () => {
             throw new Error(`Il n'y à pas de compte enregistré`);
         }
         //Boucle pour afficher tous les comptes
-        comptes.forEach(compte => {
+        comptes.forEach(compte =>{
             message.innerText += `${compte.afficherCompte()} \n`;
         });
         tools.messageColorValid(message);

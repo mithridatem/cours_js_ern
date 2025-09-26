@@ -1,0 +1,39 @@
+:root {
+	font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+	line-height: 1.5;
+	font-weight: 400;
+
+	color-scheme: light dark;
+	color: rgba(255, 255, 255, 0.87);
+	background-color: #242424;
+
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+#bloc_meteo {
+	width: 60vw;
+	min-height: 60vh;
+	margin: 2vh auto 2vh;
+	background-color: #3c3b3b;
+	display: flex;
+	flex-direction: column;
+	#form{
+		align-self:center;
+		#city, #charger {
+			margin: 0.8rem;
+		}
+		#city {
+			height: 40px;
+			width: 300px;
+			text-align: center;
+			font-size: 1.2rem;
+		}
+		#charger{
+			height: 40px;
+			width: 100px;
+		}
+	}
+}

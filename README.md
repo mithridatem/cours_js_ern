@@ -1,4 +1,4 @@
-- 2 Installer Leaflet avec npm :
+- 1 Installer la librairie Leaflet avec npm :
 ```sh
 npm install leaflet
 ```

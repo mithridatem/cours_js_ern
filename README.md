@@ -23,7 +23,7 @@ import Leaflet  from 'leaflet';
 }
 ```
 
--5 Créer la map en JS :
+- 5 Créer la map en JS :
 ```js
 //Création de la map centréé sur Toulouse
 const map = Leaflet.map('map').setView([43.604429, 1.443812], 14);

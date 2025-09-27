@@ -34,9 +34,8 @@ const getMeteoJson = async (city) => {
         .then(response => {
             if (response.status === 200) {
                 return response.json();
-            } else {
-                return response;
-            }
+            } 
+            return response;
         }).catch(error => {
             throw new Error("Le serveur ne répond pas");
         });
